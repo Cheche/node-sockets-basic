@@ -28,3 +28,29 @@ server.listen(port, (err) => {
     console.log('docker exec -it socket-io_app_node_1 sh --color=auto');
 
 });
+
+// eventos socket en el backend
+io.on('connection', (client)=>{
+
+    console.log('BE','client connected');
+
+    // detect discconect
+    client.on('disconnect', () => {
+        console.log('client discconected');
+    });
+
+
+    //especificando mensaje custom
+    client.on('sendMessage', (messaje)=>{
+        console.log(messaje);
+    });
+
+
+    //emitiendo del be al fe
+    client.emit('enviarMessage',{
+        user: 'adminBE',
+        messaje: 'welcome'
+    });
+
+});
+
