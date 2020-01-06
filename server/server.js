@@ -13,7 +13,8 @@ app.use(express.static(publicPath));
 
 
 let server = http.createServer(app);    // Uso la config de express para el server
-let io = socketIO(server);              // BackEnd Socket = mantiene el socket abierto
+module.exports.io = socketIO(server);   // BackEnd Socket = mantiene el socket abierto
+require('./sockets/socket');
 
 // Escucho el server -> OJO. no es app, es server
 server.listen(port, (err) => {
@@ -28,35 +29,3 @@ server.listen(port, (err) => {
     console.log('docker exec -it socket-io_app_node_1 sh --color=auto');
 
 });
-
-// eventos socket en el backend
-io.on('connection', (client)=>{
-
-    console.log('BE','client connected');
-
-    // detect discconect
-    client.on('disconnect', () => {
-        console.log('client discconected');
-    });
-
-
-    //especificando mensaje custom
-    client.on('sendMessage', (messaje, callback)=>{
-        console.log(messaje);
-
-        if ( messaje.user ) {
-            callback({ok: true}); // disparo callback
-        } else {
-            callback({ok: false}); // disparo callback
-        }
-    });
-
-
-    //emitiendo del be al fe
-    client.emit('enviarMessage',{
-        user: 'adminBE',
-        messaje: 'welcome'
-    });
-
-});
-
