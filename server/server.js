@@ -41,8 +41,14 @@ io.on('connection', (client)=>{
 
 
     //especificando mensaje custom
-    client.on('sendMessage', (messaje)=>{
+    client.on('sendMessage', (messaje, callback)=>{
         console.log(messaje);
+
+        if ( messaje.user ) {
+            callback({ok: true}); // disparo callback
+        } else {
+            callback({ok: false}); // disparo callback
+        }
     });
 
 
