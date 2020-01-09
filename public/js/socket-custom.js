@@ -1,15 +1,17 @@
-// basic script to connect with backend socket
+// basic script to connect with backend using socket
 var socket = io();
 
+// when connecting to the server
 socket.on('connect', function(){
     console.log('Connected to server');
 });
 
-socket.on('disconnet', function(){
+// when disconnecting from the server
+socket.on('disconnect', function(){
     console.log('Connection loss');
 });
 
-// Emitiendo info del cliente al server
+// Client emit data
 socket.emit(
     'sendMessage',                              // event name
     { user: 'ivan', msg: 'hola mundo' },        // data to send
@@ -19,7 +21,7 @@ socket.emit(
     }
 );
 
-// recibiendo desdel el server
-socket.on('enviarMessage', function(msj){
+// Client receive data
+socket.on('sendMessage', function(msj){
     console.log('Received',msj);
 });

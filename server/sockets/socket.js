@@ -1,6 +1,6 @@
 const { io } = require('../server');
 
-// eventos socket en el backend
+// When a client connect to the server
 io.on('connection', (client)=>{
 
     console.log('BE','client connected');
@@ -11,20 +11,22 @@ io.on('connection', (client)=>{
     });
 
 
-    //especificando mensaje custom
-    client.on('sendMessage', (messaje, callback)=>{
-        console.log(messaje);
+    // Receive data from a client. Send callback or emit boradcast
+    client.on('sendMessage', (data, callback)=>{
 
-        if ( messaje.user ) {
-            callback({ok: true}); // disparo callback
-        } else {
-            callback({ok: false}); // disparo callback
-        }
+        console.log(data);
+        // client.emit('enviarMessage', data);  // return data to same client
+        // if ( data.user ) {
+        //     callback({ok: true});            // Calback with info for client
+        // } else {
+        //     callback({ok: false});
+        // }
+        client.broadcast.emit('sendMessage',data); // sending data to all connected clients
     });
 
 
-    //emitiendo del be al fe
-    client.emit('enviarMessage',{
+    // Send data from server
+    client.emit('sendMessage',{
         user: 'adminBE',
         messaje: 'welcome'
     });
