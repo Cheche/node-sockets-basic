@@ -11,18 +11,6 @@ services:
     volumes:
       - '.:/srv/src'
       - 'node_modules:/srv/src/node_modules'
-    depends_on:
-      - db_mongo
-
-  db_mongo:
-    image: 'mongo:4.2'
-    volumes:
-      - './mongodb/data:/data/db'
-      - './mongodb/etc:/etc/mongo'
-    ports:
-      - '27017:27017'
-    command:
-      - mongod
 
 volumes:
   node_modules:
